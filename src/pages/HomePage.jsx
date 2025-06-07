@@ -1,22 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Typography, Button, Grid, Card, CardContent, CardActions, Box, Container } from '@mui/material';
-import { School, Code } from '@mui/icons-material';
+import { Code } from '@mui/icons-material';
 
 function HomePage() {
   const features = [
-    {
-      title: 'C语言教程',
-      description: '从基础到高级的C语言教程，包含详细的语法解释和实例代码。适合初学者和想要提高的程序员。',
-      icon: <School fontSize="large" color="primary" />,
-      link: '/tutorials'
-    },
-    {
-      title: '代码示例',
-      description: '丰富的C语言代码示例，涵盖常见算法、数据结构和实际应用场景，帮助你理解和应用C语言。',
-      icon: <Code fontSize="large" color="primary" />,
-      link: '/examples'
-    },
+
     {
       title: '在线编译器',
       description: '在线编写、编译和运行C语言代码，无需安装本地环境，随时随地学习和实践。',
@@ -35,9 +24,7 @@ function HomePage() {
           一站式C语言学习平台，从入门到精通
         </Typography>
         <Box sx={{ mt: 3 }}>
-          <Button variant="contained" color="primary" component={Link} to="/tutorials" sx={{ mx: 1 }}>
-            开始学习
-          </Button>
+
           <Button variant="outlined" color="primary" component={Link} to="/register" sx={{ mx: 1 }}>
             注册账号
           </Button>

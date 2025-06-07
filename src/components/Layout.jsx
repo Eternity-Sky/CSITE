@@ -28,8 +28,7 @@ function Layout() {
 
   const menuItems = [
     { text: '首页', icon: <Home />, path: '/' },
-
-
+    { text: '题库', icon: <MenuIcon />, path: '/problems' },
   ];
 
   const authItems = user ? [

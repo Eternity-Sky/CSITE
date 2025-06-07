@@ -6,7 +6,7 @@ import { SupabaseProvider } from './contexts/SupabaseContext';
 
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
-
+import ProblemSetPage from './pages/ProblemSetPage';
 
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -49,7 +49,7 @@ function App() {
             <Route index element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
-
+            <Route path="/problems" element={<ProblemSetPage />} />
 
             <Route path="/profile" element={<ProtectedRoute element={<ProfilePage />} />} />
 
