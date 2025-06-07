@@ -2,7 +2,7 @@ import React from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { useSupabase } from '../contexts/SupabaseContext';
 import { AppBar, Toolbar, Typography, Button, Container, Box, Drawer, List, ListItem, ListItemText, ListItemIcon, Divider, IconButton } from '@mui/material';
-import { Menu as MenuIcon, Home, School, Code, Person, AdminPanelSettings, Logout } from '@mui/icons-material';
+import { Menu as MenuIcon, Home, Person, AdminPanelSettings, Logout } from '@mui/icons-material';
 
 function Layout() {
   const { user, signOut } = useSupabase();
@@ -28,8 +28,7 @@ function Layout() {
 
   const menuItems = [
     { text: '首页', icon: <Home />, path: '/' },
-    { text: 'C语言教程', icon: <School />, path: '/tutorials' },
-    { text: '代码示例', icon: <Code />, path: '/examples' },
+
 
   ];
 
