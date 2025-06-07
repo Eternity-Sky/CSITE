@@ -17,6 +17,8 @@ const CalculatorPage = lazy(() => import('./pages/CalculatorPage'));
 const BaseConvertPage = lazy(() => import('./pages/BaseConvertPage'));
 const StringToolsPage = lazy(() => import('./pages/StringToolsPage'));
 const ProtectedRoute = lazy(() => import('./components/ProtectedRoute'));
+const ProblemList = lazy(() => import('./pages/ProblemList'));
+const ProblemDetail = lazy(() => import('./pages/ProblemDetail'));
 
 function AppWithTheme() {
   const { mode } = useThemeMode();
@@ -109,6 +111,8 @@ function AppWithTheme() {
               <Route path="/tools/calculator" element={<CalculatorPage />} />
               <Route path="/tools/base-convert" element={<BaseConvertPage />} />
               <Route path="/tools/string-tools" element={<StringToolsPage />} />
+              <Route path="/problems" element={<ProblemList />} />
+              <Route path="/problems/:id" element={<ProblemDetail />} />
               <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Routes>
