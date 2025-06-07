@@ -11,8 +11,10 @@ import {
   Paper
 } from '@mui/material';
 import { Code as CodeIcon } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 const TutorialList = () => {
+  const navigate = useNavigate();
   return (
     <Box sx={{ py: 4 }}>
       <Container>
@@ -43,11 +45,13 @@ const TutorialList = () => {
                   display: 'flex',
                   flexDirection: 'column',
                   transition: 'transform 0.2s, box-shadow 0.2s',
+                  cursor: 'pointer',
                   '&:hover': {
                     transform: 'translateY(-4px)',
                     boxShadow: '0 8px 24px rgba(0,0,0,0.12)'
                   }
                 }}
+                onClick={() => navigate(`/tutorials/${tutorial.id}`)}
               >
                 <CardContent sx={{ flexGrow: 1, p: 4 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>

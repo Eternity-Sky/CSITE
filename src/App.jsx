@@ -1,22 +1,21 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { SupabaseProvider } from './contexts/SupabaseContext';
 
-import Layout from './components/Layout';
-import HomePage from './pages/HomePage';
-import TutorialList from './components/TutorialList';
-
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-
-import ProfilePage from './pages/ProfilePage';
-import NotFoundPage from './pages/NotFoundPage';
-import CalculatorPage from './pages/CalculatorPage';
-import BaseConvertPage from './pages/BaseConvertPage';
-
-import ProtectedRoute from "./components/ProtectedRoute";
+const Layout = lazy(() => import('./components/Layout'));
+const HomePage = lazy(() => import('./pages/HomePage'));
+const TutorialList = lazy(() => import('./components/TutorialList'));
+const TutorialDetail = lazy(() => import('./pages/TutorialDetail'));
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const RegisterPage = lazy(() => import('./pages/RegisterPage'));
+const ProfilePage = lazy(() => import('./pages/ProfilePage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+const CalculatorPage = lazy(() => import('./pages/CalculatorPage'));
+const BaseConvertPage = lazy(() => import('./pages/BaseConvertPage'));
+const StringToolsPage = lazy(() => import('./pages/StringToolsPage'));
+const ProtectedRoute = lazy(() => import('./components/ProtectedRoute'));
 
 const theme = createTheme({
   palette: {
@@ -92,23 +91,27 @@ const theme = createTheme({
 
 function App() {
   return (
-    <SupabaseProvider>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<HomePage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/tutorials" element={<TutorialList />} />
-
-            <Route path="/profile" element={<ProtectedRoute element={<ProfilePage />} />} />
-
-            <Route path="/tools/calculator" element={<CalculatorPage />} />
-            <Route path="/tools/base-convert" element={<BaseConvertPage />} />
-
-            <Route path="*" element={<NotFoundPage />} />
-          </Route>
-        </Routes>
-    </SupabaseProvider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <SupabaseProvider>
+        <Suspense fallback={<div style={{textAlign:'center',marginTop:80}}>页面加载中...</div>}>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<HomePage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/tutorials" element={<TutorialList />} />
+              <Route path="/tutorials/:id" element={<TutorialDetail />} />
+              <Route path="/profile" element={<ProtectedRoute element={<ProfilePage />} />} />
+              <Route path="/tools/calculator" element={<CalculatorPage />} />
+              <Route path="/tools/base-convert" element={<BaseConvertPage />} />
+              <Route path="/tools/string-tools" element={<StringToolsPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Route>
+          </Routes>
+        </Suspense>
+      </SupabaseProvider>
+    </ThemeProvider>
   );
 }
 
