@@ -1,8 +1,9 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useMemo } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { SupabaseProvider } from './contexts/SupabaseContext';
+import { ThemeProviderCustom, useThemeMode } from './contexts/ThemeContext';
 
 const Layout = lazy(() => import('./components/Layout'));
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -17,79 +18,81 @@ const BaseConvertPage = lazy(() => import('./pages/BaseConvertPage'));
 const StringToolsPage = lazy(() => import('./pages/StringToolsPage'));
 const ProtectedRoute = lazy(() => import('./components/ProtectedRoute'));
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#2196f3',
-      light: '#64b5f6',
-      dark: '#1976d2',
+function AppWithTheme() {
+  const { mode } = useThemeMode();
+  const theme = useMemo(() => createTheme({
+    palette: {
+      mode,
+      primary: {
+        main: '#2196f3',
+        light: '#64b5f6',
+        dark: '#1976d2',
+      },
+      secondary: {
+        main: '#f50057',
+        light: '#ff4081',
+        dark: '#c51162',
+      },
+      background: {
+        default: mode === 'dark' ? '#181c1f' : '#f5f7fa',
+        paper: mode === 'dark' ? '#23272c' : '#ffffff',
+      },
+      text: {
+        primary: mode === 'dark' ? '#fff' : '#2c3e50',
+        secondary: mode === 'dark' ? '#b0b8c1' : '#546e7a',
+      },
     },
-    secondary: {
-      main: '#f50057',
-      light: '#ff4081',
-      dark: '#c51162',
+    typography: {
+      fontFamily: '"PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif',
+      h1: {
+        fontSize: '2.5rem',
+        fontWeight: 600,
+        color: mode === 'dark' ? '#fff' : '#2c3e50',
+      },
+      h2: {
+        fontSize: '2rem',
+        fontWeight: 600,
+        color: mode === 'dark' ? '#fff' : '#2c3e50',
+      },
+      h3: {
+        fontSize: '1.75rem',
+        fontWeight: 600,
+        color: mode === 'dark' ? '#fff' : '#2c3e50',
+      },
+      button: {
+        textTransform: 'none',
+        fontWeight: 500,
+      },
     },
-    background: {
-      default: '#f5f7fa',
-      paper: '#ffffff',
+    shape: {
+      borderRadius: 8,
     },
-    text: {
-      primary: '#2c3e50',
-      secondary: '#546e7a',
-    },
-  },
-  typography: {
-    fontFamily: '"PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif',
-    h1: {
-      fontSize: '2.5rem',
-      fontWeight: 600,
-      color: '#2c3e50',
-    },
-    h2: {
-      fontSize: '2rem',
-      fontWeight: 600,
-      color: '#2c3e50',
-    },
-    h3: {
-      fontSize: '1.75rem',
-      fontWeight: 600,
-      color: '#2c3e50',
-    },
-    button: {
-      textTransform: 'none',
-      fontWeight: 500,
-    },
-  },
-  shape: {
-    borderRadius: 8,
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: 8,
-          padding: '8px 24px',
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            borderRadius: 8,
+            padding: '8px 24px',
+          },
+          contained: {
+            boxShadow: 'none',
+            '&:hover': {
+              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+            },
+          },
         },
-        contained: {
-          boxShadow: 'none',
-          '&:hover': {
-            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+      },
+      MuiCard: {
+        styleOverrides: {
+          root: {
+            borderRadius: 12,
+            boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
           },
         },
       },
     },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          borderRadius: 12,
-          boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
-        },
-      },
-    },
-  },
-});
+  }), [mode]);
 
-function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -112,6 +115,14 @@ function App() {
         </Suspense>
       </SupabaseProvider>
     </ThemeProvider>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProviderCustom>
+      <AppWithTheme />
+    </ThemeProviderCustom>
   );
 }
 

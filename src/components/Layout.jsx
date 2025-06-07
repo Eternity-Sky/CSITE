@@ -2,13 +2,15 @@ import React from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { useSupabase } from '../contexts/SupabaseContext';
 import { AppBar, Toolbar, Typography, Button, Container, Box, Drawer, List, ListItem, ListItemText, ListItemIcon, Divider, IconButton } from '@mui/material';
-import { Menu as MenuIcon, Home, Person, Book, Logout } from '@mui/icons-material';
+import { Menu as MenuIcon, Home, Person, Book, Logout, Brightness4, Brightness7 } from '@mui/icons-material';
+import { useThemeMode } from '../contexts/ThemeContext';
 
 function Layout() {
   const { user, signOut } = useSupabase();
   const navigate = useNavigate();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [isUserAdmin, setIsUserAdmin] = React.useState(false);
+  const { mode, toggleTheme } = useThemeMode();
 
   React.useEffect(() => {
     // 移除isAdmin检查
@@ -110,7 +112,10 @@ function Layout() {
                 </Button>
               ))}
             </Box>
-            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
+              <IconButton color="inherit" onClick={toggleTheme} sx={{ mx: 1 }}>
+                {mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
+              </IconButton>
               {authItems.map((item) => (
                 <Button 
                   key={item.text} 
