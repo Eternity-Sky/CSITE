@@ -1,26 +1,32 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Typography, Button, Grid, Card, CardContent, CardActions, Box, Container } from '@mui/material';
-import { Code, School, Speed } from '@mui/icons-material';
+import { Calculate, SwapHoriz, TextFields, School } from '@mui/icons-material';
 
 function HomePage() {
   const features = [
     {
-      title: '在线编译器',
-      description: '在线编写、编译和运行C语言代码，无需安装本地环境，随时随地学习和实践。',
-      icon: <Code fontSize="large" color="primary" />,
-      link: '/compiler'
+      title: '在线计算器',
+      description: '支持基础四则运算、科学计算等，方便编程时随时使用。',
+      icon: <Calculate fontSize="large" color="primary" />,
+      link: '/tools/calculator'
+    },
+    {
+      title: '进制转换',
+      description: '快速进行二进制、八进制、十进制、十六进制等进制互转。',
+      icon: <SwapHoriz fontSize="large" color="primary" />,
+      link: '/tools/base-convert'
+    },
+    {
+      title: '字符串处理',
+      description: '大小写转换、去空格、编码解码等常用字符串操作。',
+      icon: <TextFields fontSize="large" color="primary" />,
+      link: '/tools/string-tools'
     },
     {
       title: '系统化教程',
       description: '从基础到进阶，循序渐进的学习路径，帮助你掌握C语言编程技能。',
       icon: <School fontSize="large" color="primary" />,
-      link: '/tutorials'
-    },
-    {
-      title: '高效学习',
-      description: '理论与实践相结合，通过大量实例和练习，快速提升编程能力。',
-      icon: <Speed fontSize="large" color="primary" />,
       link: '/tutorials'
     }
   ];
@@ -110,7 +116,7 @@ function HomePage() {
         {/* Features Section */}
         <Grid container spacing={4} sx={{ mb: 8 }}>
           {features.map((feature) => (
-            <Grid item xs={12} md={4} key={feature.title}>
+            <Grid item xs={12} md={3} key={feature.title}>
               <Card 
                 sx={{ 
                   height: '100%', 

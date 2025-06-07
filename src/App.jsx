@@ -13,6 +13,8 @@ import RegisterPage from './pages/RegisterPage';
 
 import ProfilePage from './pages/ProfilePage';
 import NotFoundPage from './pages/NotFoundPage';
+import CalculatorPage from './pages/CalculatorPage';
+import BaseConvertPage from './pages/BaseConvertPage';
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -99,6 +101,9 @@ function App() {
             <Route path="/tutorials" element={<TutorialList />} />
 
             <Route path="/profile" element={<ProtectedRoute element={<ProfilePage />} />} />
+
+            <Route path="/tools/calculator" element={<CalculatorPage />} />
+            <Route path="/tools/base-convert" element={<BaseConvertPage />} />
 
             <Route path="*" element={<NotFoundPage />} />
           </Route>
