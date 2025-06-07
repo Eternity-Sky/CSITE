@@ -2,7 +2,7 @@ import React from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { useSupabase } from '../contexts/SupabaseContext';
 import { AppBar, Toolbar, Typography, Button, Container, Box, Drawer, List, ListItem, ListItemText, ListItemIcon, Divider, IconButton } from '@mui/material';
-import { Menu as MenuIcon, Home, Person, AdminPanelSettings, Logout } from '@mui/icons-material';
+import { Menu as MenuIcon, Home, Person, Book, Logout } from '@mui/icons-material';
 
 function Layout() {
   const { user, signOut } = useSupabase();
@@ -28,7 +28,7 @@ function Layout() {
 
   const menuItems = [
     { text: '首页', icon: <Home />, path: '/' },
-    { text: '题库', icon: <MenuIcon />, path: '/problems' },
+    { text: '教程', icon: <Book />, path: '/tutorials' },
   ];
 
   const authItems = user ? [
@@ -74,52 +74,60 @@ function Layout() {
 
   return (
     <>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-            onClick={toggleDrawer(true)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component={Link} to="/" sx={{ flexGrow: 1, textDecoration: 'none', color: 'white' }}>
-            C语言学习网
-          </Typography>
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            {menuItems.map((item) => (
-              <Button 
-                key={item.text} 
-                color="inherit" 
-                component={Link} 
-                to={item.path}
-                sx={{ mx: 1 }}
-                startIcon={item.icon}
-              >
-                {item.text}
-              </Button>
-            ))}
-          </Box>
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            {authItems.map((item) => (
-              <Button 
-                key={item.text} 
-                color="inherit" 
-                component={item.onClick ? 'button' : Link} 
-                to={item.path}
-                onClick={item.onClick}
-                sx={{ mx: 1 }}
-                startIcon={item.icon}
-              >
-                {item.text}
-              </Button>
-            ))}
-          </Box>
-        </Toolbar>
-      </AppBar>
+      <Box sx={{
+        mt: 2,
+        mx: { xs: 0.5, sm: 2 },
+        borderRadius: '16px 16px 0 0',
+        overflow: 'hidden',
+        boxShadow: 2
+      }}>
+        <AppBar position="static" elevation={0} color="primary">
+          <Toolbar>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+              onClick={toggleDrawer(true)}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" component={Link} to="/" sx={{ flexGrow: 1, textDecoration: 'none', color: 'white' }}>
+              C语言学习网
+            </Typography>
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              {menuItems.map((item) => (
+                <Button 
+                  key={item.text} 
+                  color="inherit" 
+                  component={Link} 
+                  to={item.path}
+                  sx={{ mx: 1 }}
+                  startIcon={item.icon}
+                >
+                  {item.text}
+                </Button>
+              ))}
+            </Box>
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              {authItems.map((item) => (
+                <Button 
+                  key={item.text} 
+                  color="inherit" 
+                  component={item.onClick ? 'button' : Link} 
+                  to={item.path}
+                  onClick={item.onClick}
+                  sx={{ mx: 1 }}
+                  startIcon={item.icon}
+                >
+                  {item.text}
+                </Button>
+              ))}
+            </Box>
+          </Toolbar>
+        </AppBar>
+      </Box>
 
       <Drawer
         anchor="left"

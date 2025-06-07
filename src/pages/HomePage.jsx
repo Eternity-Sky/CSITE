@@ -1,71 +1,218 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Typography, Button, Grid, Card, CardContent, CardActions, Box, Container } from '@mui/material';
-import { Code } from '@mui/icons-material';
+import { Code, School, Speed } from '@mui/icons-material';
 
 function HomePage() {
   const features = [
-
     {
       title: '在线编译器',
       description: '在线编写、编译和运行C语言代码，无需安装本地环境，随时随地学习和实践。',
       icon: <Code fontSize="large" color="primary" />,
       link: '/compiler'
+    },
+    {
+      title: '系统化教程',
+      description: '从基础到进阶，循序渐进的学习路径，帮助你掌握C语言编程技能。',
+      icon: <School fontSize="large" color="primary" />,
+      link: '/tutorials'
+    },
+    {
+      title: '高效学习',
+      description: '理论与实践相结合，通过大量实例和练习，快速提升编程能力。',
+      icon: <Speed fontSize="large" color="primary" />,
+      link: '/tutorials'
     }
   ];
 
   return (
-    <Container>
-      <Box sx={{ my: 4, textAlign: 'center' }}>
-        <Typography variant="h2" component="h1" gutterBottom>
-          欢迎来到C语言学习网
-        </Typography>
-        <Typography variant="h5" color="text.secondary" paragraph>
-          一站式C语言学习平台，从入门到精通
-        </Typography>
-        <Box sx={{ mt: 3 }}>
-
-          <Button variant="outlined" color="primary" component={Link} to="/register" sx={{ mx: 1 }}>
-            注册账号
-          </Button>
+    <Box>
+      {/* Hero Section */}
+      <Container maxWidth="lg" sx={{ py: { xs: 6, md: 10 } }}>
+        <Box sx={{ 
+          textAlign: 'center', 
+          maxWidth: '800px', 
+          mx: 'auto',
+          mb: { xs: 6, md: 10 }
+        }}>
+          <Typography 
+            variant="h2" 
+            component="h1" 
+            gutterBottom 
+            sx={{ 
+              fontWeight: 700,
+              fontSize: { xs: '2.5rem', md: '3.5rem' },
+              mb: 3
+            }}
+          >
+            欢迎来到
+            <Box 
+              component="span" 
+              sx={{ 
+                color: 'primary.main',
+                display: 'inline-block',
+                ml: 1
+              }}
+            >
+              C语言学习网
+            </Box>
+          </Typography>
+          <Typography 
+            variant="h5" 
+            sx={{ 
+              color: 'text.secondary',
+              mb: 4,
+              fontSize: { xs: '1.1rem', md: '1.25rem' },
+              lineHeight: 1.6
+            }}
+          >
+            一站式C语言学习平台，从入门到精通
+          </Typography>
+          <Box sx={{ 
+            display: 'flex', 
+            gap: 2,
+            justifyContent: 'center',
+            flexWrap: 'wrap'
+          }}>
+            <Button 
+              variant="contained" 
+              color="primary" 
+              component={Link} 
+              to="/register" 
+              size="large"
+              sx={{ 
+                px: 4,
+                py: 1.5,
+                fontSize: '1.1rem',
+                borderRadius: 2
+              }}
+            >
+              开始学习
+            </Button>
+            <Button 
+              variant="outlined" 
+              color="primary" 
+              component={Link} 
+              to="/tutorials"
+              size="large"
+              sx={{ 
+                px: 4,
+                py: 1.5,
+                fontSize: '1.1rem',
+                borderRadius: 2
+              }}
+            >
+              浏览教程
+            </Button>
+          </Box>
         </Box>
-      </Box>
 
-      <Grid container spacing={4} sx={{ mt: 4 }}>
-        {features.map((feature) => (
-          <Grid item xs={12} md={4} key={feature.title}>
-            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', borderRadius: 2 }}>
-              <CardContent sx={{ flexGrow: 1 }}>
-                <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
-                  {feature.icon}
-                </Box>
-                <Typography gutterBottom variant="h5" component="h2" align="center">
-                  {feature.title}
-                </Typography>
-                <Typography align="center">
-                  {feature.description}
-                </Typography>
-              </CardContent>
-              <CardActions sx={{ justifyContent: 'center', pb: 2 }}>
-                <Button size="small" color="primary" component={Link} to={feature.link}>
-                  了解更多
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+        {/* Features Section */}
+        <Grid container spacing={4} sx={{ mb: 8 }}>
+          {features.map((feature) => (
+            <Grid item xs={12} md={4} key={feature.title}>
+              <Card 
+                sx={{ 
+                  height: '100%', 
+                  display: 'flex', 
+                  flexDirection: 'column',
+                  transition: 'all 0.3s ease',
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  '&:hover': {
+                    transform: 'translateY(-8px)',
+                    boxShadow: '0 12px 24px rgba(0,0,0,0.1)',
+                    borderColor: 'primary.main'
+                  }
+                }}
+              >
+                <CardContent sx={{ flexGrow: 1, textAlign: 'center', py: 4 }}>
+                  <Box sx={{ 
+                    display: 'inline-flex', 
+                    p: 2, 
+                    borderRadius: '12px', 
+                    bgcolor: 'primary.50',
+                    color: 'primary.main',
+                    mb: 2
+                  }}>
+                    {feature.icon}
+                  </Box>
+                  <Typography 
+                    gutterBottom 
+                    variant="h5" 
+                    component="h2" 
+                    sx={{ 
+                      fontWeight: 600,
+                      mb: 2
+                    }}
+                  >
+                    {feature.title}
+                  </Typography>
+                  <Typography 
+                    color="text.secondary"
+                    sx={{ 
+                      lineHeight: 1.7,
+                      fontSize: '1.1rem'
+                    }}
+                  >
+                    {feature.description}
+                  </Typography>
+                </CardContent>
+                <CardActions sx={{ justifyContent: 'center', pb: 3 }}>
+                  <Button 
+                    size="large" 
+                    color="primary" 
+                    component={Link} 
+                    to={feature.link}
+                    sx={{ 
+                      fontWeight: 500,
+                      borderRadius: 2
+                    }}
+                  >
+                    了解更多
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
 
-      <Box sx={{ my: 6, textAlign: 'center' }}>
-        <Typography variant="h4" gutterBottom>
-          为什么选择我们？
-        </Typography>
-        <Typography variant="body1" paragraph>
-          我们提供全面的C语言学习资源，从基础语法到高级应用，帮助你成为C语言专家。
-          注册账号后，你可以保存学习进度，参与社区讨论，获取个性化学习建议。
-        </Typography>
-      </Box>
-    </Container>
+        {/* Why Choose Us Section */}
+        <Box sx={{ 
+          textAlign: 'center', 
+          maxWidth: '800px', 
+          mx: 'auto',
+          mb: 8,
+          px: 2
+        }}>
+          <Typography 
+            variant="h3" 
+            gutterBottom 
+            sx={{ 
+              fontWeight: 600, 
+              mb: 4,
+              fontSize: { xs: '2rem', md: '2.5rem' }
+            }}
+          >
+            为什么选择我们？
+          </Typography>
+          <Typography 
+            variant="body1" 
+            paragraph 
+            sx={{ 
+              fontSize: '1.1rem', 
+              color: 'text.secondary', 
+              lineHeight: 1.8,
+              maxWidth: '600px',
+              mx: 'auto'
+            }}
+          >
+            我们提供全面的C语言学习资源，从基础语法到高级应用，帮助你成为C语言专家。
+            注册账号后，你可以保存学习进度，参与社区讨论，获取个性化学习建议。
+          </Typography>
+        </Box>
+      </Container>
+    </Box>
   );
 }
 
