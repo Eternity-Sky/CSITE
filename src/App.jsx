@@ -38,8 +38,8 @@ function AppWithTheme() {
         paper: mode === 'dark' ? '#23272c' : '#ffffff',
       },
       text: {
-        primary: mode === 'dark' ? '#fff' : '#2c3e50',
-        secondary: mode === 'dark' ? '#b0b8c1' : '#546e7a',
+        primary: mode === 'dark' ? '#e0e0e0' : '#2c3e50',
+        secondary: mode === 'dark' ? '#a0a0a0' : '#546e7a',
       },
     },
     typography: {
