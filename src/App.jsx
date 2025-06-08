@@ -1,23 +1,20 @@
-import React, { Suspense, lazy } from 'react';
-import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { DatabaseProvider } from './contexts/DatabaseContext';
-import { ThemeProviderCustom, useThemeMode } from './contexts/ThemeContext';
-import { AuthProvider } from './contexts/AuthContext';
-
-const Layout = lazy(() => import('./components/Layout'));
-const HomePage = lazy(() => import('./pages/HomePage'));
-const LoginPage = lazy(() => import('./pages/LoginPage'));
-const RegisterPage = lazy(() => import('./pages/RegisterPage'));
-const ProfilePage = lazy(() => import('./pages/ProfilePage'));
-const ArticlesPage = lazy(() => import('./pages/ArticlesPage'));
-const ArticleDetail = lazy(() => import('./pages/ArticleDetail'));
-const AdminPage = lazy(() => import('./pages/AdminPage'));
-const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+import Layout from './components/Layout';
+import Home from './pages/Home';
+import ArticleDetail from './pages/ArticleDetail';
+import CreateArticle from './pages/CreateArticle';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Profile from './pages/Profile';
+import NotFound from './pages/NotFound';
 
 const theme = createTheme({
   palette: {
+    mode: 'light',
     primary: {
       main: '#1976d2',
     },
@@ -27,48 +24,26 @@ const theme = createTheme({
   },
 });
 
-function AppContent() {
-  const { mode } = useThemeMode();
-  const currentTheme = createTheme({
-    ...theme,
-    palette: {
-      ...theme.palette,
-      mode,
-    },
-  });
-
-  return (
-    <ThemeProvider theme={currentTheme}>
-      <CssBaseline />
-      <DatabaseProvider>
-        <AuthProvider>
-          <Suspense fallback={<div style={{textAlign:'center',marginTop:80}}>页面加载中...</div>}>
-            <Routes>
-              <Route path="/" element={<Layout />}>
-                <Route index element={<HomePage />} />
-                <Route path="login" element={<LoginPage />} />
-                <Route path="register" element={<RegisterPage />} />
-                <Route path="profile" element={<ProfilePage />} />
-                <Route path="articles" element={<ArticlesPage />} />
-                <Route path="articles/:id" element={<ArticleDetail />} />
-                <Route path="admin" element={<AdminPage />} />
-                <Route path="*" element={<NotFoundPage />} />
-              </Route>
-            </Routes>
-          </Suspense>
-        </AuthProvider>
-      </DatabaseProvider>
-    </ThemeProvider>
-  );
-}
-
 function App() {
   return (
-    <Router>
-      <ThemeProviderCustom>
-        <AppContent />
-      </ThemeProviderCustom>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <DatabaseProvider>
+        <Router>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/article/:id" element={<ArticleDetail />} />
+              <Route path="/create" element={<CreateArticle />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Layout>
+        </Router>
+      </DatabaseProvider>
+    </ThemeProvider>
   );
 }
 

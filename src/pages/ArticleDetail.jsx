@@ -10,48 +10,31 @@ import remarkGfm from 'remark-gfm';
 
 const ArticleDetail = () => {
   const { id } = useParams();
-  const { sql, loading: dbLoading, dbConnected } = useDatabase();
+  const { supabase } = useDatabase();
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchArticle = async () => {
-      if (!dbConnected) {
-        setError('数据库未连接');
-        setLoading(false);
-        return;
-      }
       try {
-        setLoading(true);
-        const result = await sql`
-          SELECT 
-            a.id, 
-            a.title, 
-            a.content, 
-            a.created_at, 
-            u.email as author_email 
-          FROM articles a
-          JOIN users u ON a.author_id = u.id
-          WHERE a.id = ${id}
-        `;
-        
-        if (result.length === 0) {
-          setError('文章不存在');
-        } else {
-          setArticle(result[0]);
-        }
+        const { data, error } = await supabase
+          .from('articles')
+          .select('*')
+          .eq('id', id)
+          .single();
+
+        if (error) throw error;
+        setArticle(data);
       } catch (err) {
-        setError('加载文章失败: ' + err.message);
+        setError(err.message);
       } finally {
         setLoading(false);
       }
     };
 
-    if (!dbLoading) {
-      fetchArticle();
-    }
-  }, [dbConnected, dbLoading, sql, id]);
+    fetchArticle();
+  }, [id, supabase]);
 
   if (loading) {
     return (
@@ -107,16 +90,16 @@ const ArticleDetail = () => {
         </Box>
         <Giscus
           id="comments"
-          repo="[YOUR_GITHUB_USERNAME]/[YOUR_REPO_NAME]" // 替换为你的 GitHub 用户名和仓库名
-          repoId="[YOUR_REPO_ID]" // 替换为你的 Repo ID
-          category="[YOUR_DISCUSSION_CATEGORY_NAME]" // 替换为你的 Discussion Category Name (例如: General)
-          categoryId="[YOUR_CATEGORY_ID]" // 替换为你的 Category ID
+          repo="[在此填入您的 GitHub 仓库名]"
+          repoId="[在此填入您的仓库 ID]"
+          category="General"
+          categoryId="DIC_kwDOJ5YfYc4Cb5w0"
           mapping="pathname"
-          strict="0"
+          term="Welcome to @giscus/react component!"
           reactionsEnabled="1"
           emitMetadata="0"
-          inputPosition="top"
-          theme="preferred_color_scheme"
+          inputPosition="bottom"
+          theme="light"
           lang="zh-CN"
           loading="lazy"
         />
