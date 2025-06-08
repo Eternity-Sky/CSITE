@@ -1,6 +1,8 @@
-import React, { createContext, useContext, useMemo, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
-const ThemeContext = createContext();
+const ThemeContext = createContext(null);
 
 export function ThemeProviderCustom({ children }) {
   const [mode, setMode] = useState(() => localStorage.getItem('themeMode') || 'light');
@@ -9,9 +11,14 @@ export function ThemeProviderCustom({ children }) {
     localStorage.setItem('themeMode', mode);
   }, [mode]);
 
-  const toggleTheme = () => setMode((prev) => (prev === 'light' ? 'dark' : 'light'));
+  const toggleTheme = () => {
+    setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+  };
 
-  const value = useMemo(() => ({ mode, toggleTheme }), [mode]);
+  const value = {
+    mode,
+    toggleTheme,
+  };
 
   return (
     <ThemeContext.Provider value={value}>
@@ -21,5 +28,9 @@ export function ThemeProviderCustom({ children }) {
 }
 
 export function useThemeMode() {
-  return useContext(ThemeContext);
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error('useThemeMode must be used within a ThemeProviderCustom');
+  }
+  return context;
 } 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useSupabase } from '../contexts/SupabaseContext';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import { Container, Typography, TextField, Button, Box, Paper, Alert } from '@mui/material';
 
 function LoginPage() {
@@ -8,8 +8,10 @@ function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { signIn } = useSupabase();
+  const { signIn } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const message = location.state?.message;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,11 +19,14 @@ function LoginPage() {
     setLoading(true);
 
     try {
-      const { error } = await signIn(email, password);
-      if (error) throw error;
-      navigate('/');
+      const { success, error: authError } = await signIn(email, password);
+      if (!success) {
+        throw new Error(authError || '登录失败');
+      }
+      
+      navigate('/profile');
     } catch (error) {
-      setError(error.message || '登录失败，请检查您的邮箱和密码');
+      setError(error.message || '登录失败，请稍后再试');
     } finally {
       setLoading(false);
     }
@@ -31,9 +36,15 @@ function LoginPage() {
     <Container maxWidth="sm">
       <Paper elevation={3} sx={{ p: 4, mt: 4 }}>
         <Typography variant="h4" component="h1" align="center" gutterBottom>
-          登录
+          登录账号
         </Typography>
-        
+
+        {message && (
+          <Alert severity="success" sx={{ mb: 2 }}>
+            {message}
+          </Alert>
+        )}
+
         {error && (
           <Alert severity="error" sx={{ mb: 2 }}>
             {error}

@@ -1,27 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useDatabase } from '../contexts/DatabaseContext';
 import { Navigate } from 'react-router-dom';
-import { useSupabase } from '../contexts/SupabaseContext';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { CircularProgress, Box } from '@mui/material';
 
-function ProtectedRoute({ children }) {
-  const { user, loading } = useSupabase();
+function ProtectedRoute({ element }) {
+  const { user, loading } = useDatabase();
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh', flexDirection: 'column' }}>
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
         <CircularProgress />
-        <Typography variant="h6" sx={{ mt: 2 }}>
-          正在加载...
-        </Typography>
       </Box>
     );
   }
 
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return children;
+  return user ? element : <Navigate to="/login" />;
 }
 
 export default ProtectedRoute;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSupabase } from '../contexts/SupabaseContext';
+import { useAuth } from '../contexts/AuthContext';
 import { Container, Typography, TextField, Button, Box, Paper, Alert } from '@mui/material';
 
 function RegisterPage() {
@@ -9,7 +9,7 @@ function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { signUp } = useSupabase();
+  const { signUp } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -31,8 +31,10 @@ function RegisterPage() {
     setLoading(true);
 
     try {
-      const { error } = await signUp(email, password);
-      if (error) throw error;
+      const { success, error: authError } = await signUp(email, password);
+      if (!success) {
+        throw new Error(authError || '注册失败');
+      }
       
       // 注册成功
       navigate('/login', { state: { message: '注册成功，请登录您的账号' } });
