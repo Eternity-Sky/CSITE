@@ -9,12 +9,23 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 从 localStorage 获取用户信息
+    console.log('AuthProvider useEffect: Attempting to load user from localStorage.');
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+        console.log('AuthProvider useEffect: User loaded from localStorage:', parsedUser);
+      } catch (e) {
+        console.error('AuthProvider useEffect: Failed to parse user from localStorage:', e);
+        localStorage.removeItem('user'); // Clear invalid data
+        setUser(null);
+      }
+    } else {
+      console.log('AuthProvider useEffect: No user found in localStorage.');
     }
     setLoading(false);
+    console.log('AuthProvider useEffect: Loading set to false.');
   }, []);
 
   const signIn = async (email, password) => {

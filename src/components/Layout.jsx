@@ -1,12 +1,12 @@
 import React from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
-import { useDatabase } from '../contexts/DatabaseContext';
+import { useAuth } from '../contexts/AuthContext';
 import { AppBar, Toolbar, Typography, Button, Container, Box, Drawer, List, ListItem, ListItemText, ListItemIcon, Divider, IconButton } from '@mui/material';
 import { Menu as MenuIcon, Home, Person, Book, Logout, Brightness4, Brightness7 } from '@mui/icons-material';
 import { useThemeMode } from '../contexts/ThemeContext';
 
 function Layout() {
-  const { user, signOut } = useDatabase();
+  const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [isUserAdmin, setIsUserAdmin] = React.useState(false);
