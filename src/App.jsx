@@ -8,11 +8,12 @@ import { AuthProvider } from './contexts/AuthContext';
 
 const Layout = lazy(() => import('./components/Layout'));
 const HomePage = lazy(() => import('./pages/HomePage'));
-const TutorialList = lazy(() => import('./components/TutorialList'));
-const TutorialDetail = lazy(() => import('./pages/TutorialDetail'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/RegisterPage'));
 const ProfilePage = lazy(() => import('./pages/ProfilePage'));
+const ArticlesPage = lazy(() => import('./pages/ArticlesPage'));
+const ArticleDetail = lazy(() => import('./pages/ArticleDetail'));
+const AdminPage = lazy(() => import('./pages/AdminPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 const theme = createTheme({
@@ -45,11 +46,12 @@ function AppContent() {
             <Routes>
               <Route path="/" element={<Layout />}>
                 <Route index element={<HomePage />} />
-                <Route path="tutorials" element={<TutorialList />} />
-                <Route path="tutorials/:id" element={<TutorialDetail />} />
                 <Route path="login" element={<LoginPage />} />
                 <Route path="register" element={<RegisterPage />} />
                 <Route path="profile" element={<ProfilePage />} />
+                <Route path="articles" element={<ArticlesPage />} />
+                <Route path="articles/:id" element={<ArticleDetail />} />
+                <Route path="admin" element={<AdminPage />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Route>
             </Routes>

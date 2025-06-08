@@ -157,6 +157,42 @@ export function DatabaseProvider({ children }) {
     }
   };
 
+  // 获取文章功能
+  const getArticles = async () => {
+    try {
+      const result = await sql`
+        SELECT 
+          a.id, 
+          a.title, 
+          a.content, 
+          a.created_at, 
+          u.email as author_email 
+        FROM articles a
+        JOIN users u ON a.author_id = u.id
+        ORDER BY a.created_at DESC
+      `;
+      return { articles: result, error: null };
+    } catch (error) {
+      console.error('获取文章失败:', error);
+      return { articles: [], error: error.message };
+    }
+  };
+
+  // 创建文章功能
+  const createArticle = async (title, content, author_id) => {
+    try {
+      const result = await sql`
+        INSERT INTO articles (title, content, author_id)
+        VALUES (${title}, ${content}, ${author_id})
+        RETURNING id, title, created_at;
+      `;
+      return { article: result[0], error: null };
+    } catch (error) {
+      console.error('创建文章失败:', error);
+      return { article: null, error: error.message };
+    }
+  };
+
   const value = {
     user,
     loading,
@@ -165,6 +201,8 @@ export function DatabaseProvider({ children }) {
     signUp,
     signOut,
     sql,
+    getArticles,
+    createArticle,
   };
 
   return (

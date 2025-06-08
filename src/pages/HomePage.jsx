@@ -1,9 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Typography, Button, Grid, Card, CardContent, CardActions, Box, Container } from '@mui/material';
+import { Container, Box, Typography, Button, Grid, Card, CardContent, CardActions } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { Calculate, SwapHoriz, TextFields, School } from '@mui/icons-material';
 
-function HomePage() {
+const HomePage = () => {
+  const navigate = useNavigate();
+
   const features = [
     {
       title: '在线计算器',
@@ -74,43 +76,19 @@ function HomePage() {
           >
             一站式C语言学习平台，从入门到精通
           </Typography>
-          <Box sx={{ 
-            display: 'flex', 
-            gap: 2,
-            justifyContent: 'center',
-            flexWrap: 'wrap'
-          }}>
-            <Button 
-              variant="contained" 
-              color="primary" 
-              component={Link} 
-              to="/register" 
-              size="large"
-              sx={{ 
-                px: 4,
-                py: 1.5,
-                fontSize: '1.1rem',
-                borderRadius: 2
-              }}
-            >
-              开始学习
-            </Button>
-            <Button 
-              variant="outlined" 
-              color="primary" 
-              component={Link} 
-              to="/tutorials"
-              size="large"
-              sx={{ 
-                px: 4,
-                py: 1.5,
-                fontSize: '1.1rem',
-                borderRadius: 2
-              }}
-            >
-              浏览教程
-            </Button>
-          </Box>
+          <Button 
+            variant="contained" 
+            size="large" 
+            onClick={() => navigate('/articles')}
+            sx={{ 
+              px: 4,
+              py: 1.5,
+              fontSize: '1.1rem',
+              borderRadius: 2
+            }}
+          >
+            浏览文章
+          </Button>
         </Box>
 
         {/* Features Section */}
@@ -168,8 +146,7 @@ function HomePage() {
                   <Button 
                     size="large" 
                     color="primary" 
-                    component={Link} 
-                    to={feature.link}
+                    onClick={() => navigate(feature.link)}
                     sx={{ 
                       fontWeight: 500,
                       borderRadius: 2
@@ -220,6 +197,6 @@ function HomePage() {
       </Container>
     </Box>
   );
-}
+};
 
 export default HomePage;

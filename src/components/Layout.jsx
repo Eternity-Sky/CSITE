@@ -1,20 +1,47 @@
-import React from 'react';
-import { Outlet, Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { AppBar, Toolbar, Typography, Button, Container, Box, Drawer, List, ListItem, ListItemText, ListItemIcon, Divider, IconButton } from '@mui/material';
-import { Menu as MenuIcon, Home, Person, Book, Logout, Brightness4, Brightness7 } from '@mui/icons-material';
+import { useDatabase } from '../contexts/DatabaseContext';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Container,
+  Box,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Divider,
+  IconButton,
+  Avatar,
+  Tooltip,
+  Menu,
+  MenuItem,
+} from '@mui/material';
+import {
+  Menu as MenuIcon,
+  Home,
+  Person,
+  Login,
+  Logout,
+  Brightness4,
+  Brightness7,
+  Article,
+  AdminPanelSettings,
+} from '@mui/icons-material';
 import { useThemeMode } from '../contexts/ThemeContext';
 
 function Layout() {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
-  const [isUserAdmin, setIsUserAdmin] = React.useState(false);
   const { mode, toggleTheme } = useThemeMode();
-
-  React.useEffect(() => {
-    // 移除isAdmin检查
-  }, [user]);
+  const [isUserAdmin, setIsUserAdmin] = useState(false);
+  const { sql, dbConnected } = useDatabase();
 
   const handleLogout = async () => {
     await signOut();
@@ -30,7 +57,7 @@ function Layout() {
 
   const menuItems = [
     { text: '首页', icon: <Home />, path: '/' },
-    { text: '教程', icon: <Book />, path: '/tutorials' },
+    { text: '文章', icon: <Article />, path: '/articles' },
   ];
 
   const authItems = user ? [
@@ -40,6 +67,23 @@ function Layout() {
     { text: '登录', path: '/login' },
     { text: '注册', path: '/register' },
   ];
+
+  React.useEffect(() => {
+    const checkAdminStatus = async () => {
+      if (user) {
+        try {
+          const result = await sql`
+            SELECT role FROM users WHERE id = ${user.id}
+          `;
+          setIsUserAdmin(result[0]?.role === 'admin');
+        } catch (error) {
+          console.error('检查管理员状态失败:', error);
+        }
+      }
+    };
+
+    checkAdminStatus();
+  }, [user, sql]);
 
   const drawer = (
     <Box
@@ -111,6 +155,18 @@ function Layout() {
                   {item.text}
                 </Button>
               ))}
+              {isUserAdmin && (
+                <Button
+                  key="admin"
+                  color="inherit"
+                  component={Link}
+                  to="/admin"
+                  sx={{ mx: 1 }}
+                  startIcon={<AdminPanelSettings />}
+                >
+                  后台管理
+                </Button>
+              )}
             </Box>
             <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
               <IconButton color="inherit" onClick={toggleTheme} sx={{ mx: 1 }}>
