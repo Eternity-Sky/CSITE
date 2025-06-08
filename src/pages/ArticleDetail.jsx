@@ -3,6 +3,10 @@ import { useParams } from 'react-router-dom';
 import { useDatabase } from '../contexts/DatabaseContext';
 import { Container, Box, Typography, CircularProgress, Alert, Paper } from '@mui/material';
 import Giscus from '@giscus/react';
+import ReactMarkdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import remarkGfm from 'remark-gfm';
 
 const ArticleDetail = () => {
   const { id } = useParams();
@@ -75,9 +79,32 @@ const ArticleDetail = () => {
         <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 4 }}>
           作者: {article.author_email || '未知'} | 发布日期: {new Date(article.created_at).toLocaleDateString()}
         </Typography>
-        <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.8, mb: 4 }}>
-          {article.content}
-        </Typography>
+        <Box sx={{ lineHeight: 1.8, mb: 4 }}>
+          <ReactMarkdown
+            children={article.content}
+            remarkPlugins={[remarkGfm]}
+            components={{
+              code({ node, inline, className, children, ...props }) {
+                const match = /language-(\w+)/.exec(className || '');
+                const language = match ? match[1] : 'text';
+
+                return !inline ? (
+                  <SyntaxHighlighter
+                    children={String(children).replace(/\n$/, '')}
+                    style={dracula}
+                    language={language}
+                    PreTag="div"
+                    {...props}
+                  />
+                ) : (
+                  <code className={className} {...props}>
+                    {children}
+                  </code>
+                );
+              },
+            }}
+          />
+        </Box>
         <Giscus
           id="comments"
           repo="[YOUR_GITHUB_USERNAME]/[YOUR_REPO_NAME]" // 替换为你的 GitHub 用户名和仓库名
