@@ -198,7 +198,7 @@ function Layout() {
         {drawer}
       </Drawer>
 
-      <Container sx={{ py: 4 }}>
+      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Outlet />
       </Container>
 
